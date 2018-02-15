@@ -26,14 +26,9 @@ int main()
     else
         printf("ERROR");
     */
-    link_queue queue;
-    queue = InitLQueue();
-    LQueuePush(queue, 2);
-    LQueuePush(queue, 14);
-    LQueuePush(queue, 15);
-    int val;
-    LQueuePop(queue, &val);
-    ShowQueue(queue);
-    Destroy(queue);
-    ShowQueue(queue);
+    link_queue queue1 = NULL;
+    queue1 = InitLQueue();
+    ShowQueue(queue1);
+    LQueuePush(queue1, 11);
+    ShowQueue(queue1);
 }

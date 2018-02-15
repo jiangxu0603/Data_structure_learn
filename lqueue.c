@@ -9,11 +9,24 @@
 
 #define LQUEUEMAXLENGTH 500
 
+typedef struct _L_qnode
+{
+    int data;
+    struct _L_qnode *next;
+}L_qnode;
+
+typedef struct _LQueue
+{
+    int length;
+    L_qnode *front;
+    L_qnode *rear;
+}*link_queue;
+
 link_queue InitLQueue()
 {
     L_qnode *empty_head = BuyNode(0);
     link_queue pQueue;
-    pQueue = malloc(sizeof(link_queue));
+    pQueue = malloc(sizeof(struct _LQueue));
     pQueue->front = empty_head;
     pQueue->rear = empty_head;
     return pQueue;
@@ -21,7 +34,7 @@ link_queue InitLQueue()
 
 L_qnode* BuyNode(int val)                //从堆中申请一个节点的内存空间
 {
-    L_qnode *pTmp = malloc(sizeof(L_qnode));
+    L_qnode *pTmp = (L_qnode*)malloc(sizeof(L_qnode));
     assert(pTmp != NULL);
     pTmp->data = val;
     pTmp->next = NULL;
@@ -35,10 +48,12 @@ void LQueuePush(link_queue pQueue, int val)
         printf("out of max");
         return;
     }
-    L_qnode *pCur = BuyNode(val);
+    L_qnode *pCur = (L_qnode*)malloc(sizeof(L_qnode));
+    pCur->data = val;
+    pCur->next = NULL;
     pQueue->rear->next = pCur;
     pQueue->rear = pCur;
-    pQueue += 1;
+    pQueue->length += 1;
 }
 
 bool LQueuePop(link_queue pQueue, int *rtval)     //出队，从队首(front)出
@@ -94,10 +109,9 @@ void Destroy(link_queue pQueue)             //销毁队列(释放所有节点的
         }
         pQueue->front = pQueue->front->next;
     }
-
 }
 
-void ShowQueue(const link_queue pQueue)
+void ShowQueue(link_queue pQueue)
 {
     if(pQueue->front == pQueue->rear)
     {
